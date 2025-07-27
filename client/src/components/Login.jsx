@@ -4,7 +4,7 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-// import { AuthContext } from '../AuthProvider';
+import { AuthContext } from '../AuthProvider';
 const proxy = import.meta.env.VITE_REACT_APP_PROXY;
 
 const Login = () => {
@@ -13,28 +13,23 @@ const Login = () => {
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 	const [error, setError] = useState('');
-	// const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+	const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
 		setLoading(true);
-
 		const userData = { username, password };
-		console.log('userData==>', userData);
 
 		try {
-			// For Vite projects, use import.meta.env
-			const response = await axios.post(`${proxy}/api/v1/token/`, userData);
+			const response = await axios.post(`${proxy}/api/v2/token/`, userData);
 			localStorage.setItem('accessToken', response.data.access);
 			localStorage.setItem('refreshToken', response.data.refresh);
-			console.log('Login successful');
-			// setIsLoggedIn(true);
-			navigate('/dashboard');
-			toast.success(`Login successful, welcome ${username}!`);
+			setIsLoggedIn(true);
+			navigate('/');
+			toast.success(`Welcome back ${username}!`);
 		} catch (error) {
-			console.error('Invalid credentials');
 			setError('Invalid credentials');
-			toast.error(error.response.data.detail || ' Login failed');
+			toast.error('Invalid credentials');
 		} finally {
 			setLoading(false);
 		}
@@ -44,7 +39,7 @@ const Login = () => {
 		<>
 			<div className="container">
 				<div className="row justify-content-center">
-					<div className="col-md-6 bg-light-dark p-5 rounded">
+					<div className="col-md-6 bg-light-dark p-4 rounded">
 						<h3 className="text-light text-center mb-4">Login to our Portal</h3>
 						<form onSubmit={handleLogin}>
 							<div className="mb-3">
