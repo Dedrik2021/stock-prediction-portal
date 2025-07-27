@@ -14,11 +14,14 @@ export default function Header() {
 	const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
 
 	const handleLogout = () => {
-		localStorage.removeItem('accessToken');
-		localStorage.removeItem('refreshToken');
-		setIsLoggedIn(false);
-		navigate('/login');
-		console.log('Logout successful');
+    
+        if (window.confirm('Are you sure you want to logout?')) {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            setIsLoggedIn(false);
+            navigate('/login');
+            console.log('Logout successful');
+        };
 	};
 
 	return (
@@ -31,8 +34,7 @@ export default function Header() {
 				<div className="d-flex">
 					{isLoggedIn ? (
 						<>
-							<Button text="Dashboard" className="btn btn-outline-info" url="/dashboard" />
-							&nbsp;
+							<Button text="Dashboard" className="btn btn-outline-info me-2" url="/dashboard" />
 							<button type="button" className="btn btn-danger" onClick={handleLogout}>
 								Logout
 							</button>
