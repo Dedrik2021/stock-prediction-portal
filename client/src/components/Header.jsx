@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import Button from './Button';
 
 const buttons = [
@@ -8,9 +10,9 @@ const buttons = [
 export default function Header() {
 	return (
 		<nav className="container navbar pt-3 pb-3 align-items-start">
-			<a href="/" className="navbar-brand text-light">
+			<Link to="/" className="navbar-brand text-light">
 				Stock Prediction Portal
-			</a>
+			</Link>
 
 			<div className="d-flex">
 				{buttons.map((button, index) => (

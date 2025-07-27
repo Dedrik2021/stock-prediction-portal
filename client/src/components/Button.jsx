@@ -1,7 +1,9 @@
+import { Link } from "react-router-dom";
+
 export default function Button({ text, className, url }) {
 	return (
-		<a href={url} className={`btn ${className}`}>
+		<Link to={url} className={`btn ${className}`}>
 			{text}
-		</a>
+		</Link>
 	);
 }
