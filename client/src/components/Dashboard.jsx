@@ -3,6 +3,8 @@ import axiosInstance from '../axiosInstance';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
+const proxy = import.meta.env.VITE_REACT_APP_PROXY;
+
 const Dashboard = () => {
 	const [ticker, setTicker] = useState('');
 	const [error, setError] = useState();
@@ -18,7 +20,7 @@ const Dashboard = () => {
 	useEffect(() => {
 		const fetchProtectedData = async () => {
 			try {
-				await axiosInstance.get('/api/v2/protected-view/');
+				await axiosInstance.get(`/api/v2/protected-view/`);
 			} catch (error) {
 				console.error('Error fetching data:', error);
 			}
@@ -30,11 +32,11 @@ const Dashboard = () => {
 		e.preventDefault();
 		setLoading(true);
 		try {
-			const response = await axiosInstance.post('/api/v2/predict/', {
+			const response = await axiosInstance.post(`/api/v2/predict/`, {
 				ticker: ticker,
 			});
 			console.log(response.data);
-			const backendRoot = import.meta.env.VITE_BACKEND_ROOT;
+			const backendRoot = proxy;
 			const plotUrl = `${backendRoot}${response.data.plot_img}`;
 			const ma100Url = `${backendRoot}${response.data.plot_100_dma}`;
 			const ma200Url = `${backendRoot}${response.data.plot_200_dma}`;
